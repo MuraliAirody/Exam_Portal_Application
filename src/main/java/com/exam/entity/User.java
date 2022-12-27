@@ -2,13 +2,16 @@ package com.exam.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "user")
-public class User {
+public class User  implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,6 +24,7 @@ public class User {
     private String phone;
     private boolean enabled=true;
     private String profile;
+
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy ="user")
     @JsonIgnore
@@ -60,8 +64,32 @@ public class User {
         return username;
     }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<Authority> auth = new HashSet<>();
+        getUserRoles().forEach(userRole ->auth.add(new Authority(userRole.getRole().getRolename())) );
+        for(Authority a:auth)
+            System.out.println("authority -> "+getUsername() +a.getAuthority());
+        return auth;
     }
 
     public String getPassword() {

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,6 +18,9 @@ public class ExamServerApplication implements CommandLineRunner {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 	public static void main(String[] args) {
 		SpringApplication.run(ExamServerApplication.class, args);
 	}
@@ -26,16 +30,18 @@ public class ExamServerApplication implements CommandLineRunner {
 		System.out.println("starting code");
 
 //		User user = new User();
-//		user.setUsername("Mahesh00");
-//		user.setEmail("m@gmail.com");
-//		user.setFirstname("Mahesh");
-//		user.setLastname("tyagi");
-//		user.setPhone("787994393");
-//		user.setProfile("pic.png");
+//		user.setUsername("drtex");
+//		user.setEmail("techtestingindia123@gmail.com");
+//		user.setFirstname("Murali");
+//		user.setLastname("s");
+//		user.setPhone("987654321");
+//		user.setProfile("deafult.png");
+//
+//		user.setPassword(passwordEncoder.encode("111"));
 //
 //		Role role = new Role();
-//		role.setRolename("user");
-//		role.setRoleId(55);
+//		role.setRolename("ADMIN");
+//		role.setRoleId(44);
 //
 //		Set< UserRole> userRoleSet = new HashSet<>();
 //		UserRole userRole = new UserRole();

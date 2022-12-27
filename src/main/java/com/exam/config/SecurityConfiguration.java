@@ -2,7 +2,6 @@ package com.exam.config;
 
 
 import com.exam.config.impl.UserDetailServiceImpl;
-import org.hibernate.bytecode.enhance.internal.tracker.NoopCollectionTracker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +14,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -34,8 +31,8 @@ public class SecurityConfiguration {
     private UserDetailServiceImpl userDetail;
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
-        return NoOpPasswordEncoder.getInstance();
+    public BCryptPasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -43,9 +40,12 @@ public class SecurityConfiguration {
           DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
            daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder());
            daoAuthenticationProvider.setUserDetailsService(this.userDetail);
-
            return daoAuthenticationProvider;
     }
+
+//    public void configurableGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(userDetail).passwordEncoder(passwordEncoder());
+//    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -63,8 +63,8 @@ public class SecurityConfiguration {
                .requestMatchers(HttpMethod.OPTIONS).permitAll()
                .anyRequest().authenticated()
                .and()
-               .exceptionHandling().authenticationEntryPoint(unAuthorizedHandler)
-               .and()
+               .exceptionHandling().authenticationEntryPoint(unAuthorizedHandler);
+                httpSecurity
                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
        httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

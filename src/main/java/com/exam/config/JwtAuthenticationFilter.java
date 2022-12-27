@@ -71,39 +71,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request,response);
 
-//        String header = request.getHeader("Authorization");
-//        System.out.println("header -> "+header);
-//        String username =null;
-//        String jwtToken = null;
-//
-//        if(header!=null && header.startsWith("Bearer "))
-//        {
-//            jwtToken = header.substring(7);
-//
-//            try {
-//                username = this.jwtUtils.extractUsername(jwtToken);
-//            }catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//
-//            UserDetails userDetails = this.userDetailService.loadUserByUsername(username);
-//            if(username!=null && SecurityContextHolder.getContext().getAuthentication()==null) {
-//                System.out.println(username);
-//                System.out.println(username!=null);
-//                System.out.println(SecurityContextHolder.getContext().getAuthentication());
-//
-//                System.out.println(this.jwtUtils.validateToken(jwtToken,userDetails));
-//
-//                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null,userDetails.getAuthorities());
-//                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-//                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-//            }
-//            else {
-//                System.out.println("token is not valid");
-//            }
-//        }
-//
-//        filterChain.doFilter(request, response);
+
     }
     }
 
