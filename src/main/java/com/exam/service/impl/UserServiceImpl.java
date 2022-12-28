@@ -2,6 +2,7 @@ package com.exam.service.impl;
 
 import com.exam.entity.User;
 import com.exam.entity.UserRole;
+import com.exam.exceptions.UserFoundException;
 import com.exam.repo.RoleRepository;
 import com.exam.repo.UserRepository;
 import com.exam.service.UserService;
@@ -23,7 +24,7 @@ public class UserServiceImpl implements UserService {
         User local = this.userRepository.findByUsername(user.getUsername());
         if(local!=null){
             System.out.println("User already exist");
-            throw new Exception("user already exist");
+            throw new UserFoundException();
         }else{
              for(UserRole userRole:userRoles){
                  this.roleRepository.save(userRole.getRole());

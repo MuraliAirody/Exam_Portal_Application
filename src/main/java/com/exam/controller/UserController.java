@@ -3,8 +3,10 @@ package com.exam.controller;
 import com.exam.entity.Role;
 import com.exam.entity.User;
 import com.exam.entity.UserRole;
+import com.exam.exceptions.UserFoundException;
 import com.exam.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,5 +59,10 @@ public class UserController {
     @PutMapping("/{id}")
     public User updateUser(@PathVariable("id")int id,@RequestBody User user){
         return  this.userService.updateUser(id,user);
+    }
+
+    @ExceptionHandler(UserFoundException.class)
+    public ResponseEntity<?> exceptionHandler(UserFoundException ex) {
+        return ResponseEntity.ok(ex.getMessage());
     }
 }
