@@ -2,7 +2,7 @@ package com.exam.entity.exam;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+
 
 import java.util.HashSet;
 import java.util.Set;
