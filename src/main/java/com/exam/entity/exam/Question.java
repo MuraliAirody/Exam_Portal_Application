@@ -15,6 +15,16 @@ public class Question {
     private String option3;
     private String option4;
     private String answer;
+    @Transient
+    private String givenAnswer;
+
+    public String getGivenAnswer() {
+        return givenAnswer;
+    }
+
+    public void setGivenAnswer(String givenAnswer) {
+        this.givenAnswer = givenAnswer;
+    }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "qId")

@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/question")
@@ -54,9 +51,12 @@ public class QuestionController {
 
 
         Set<Question> questions = quiz.getQuestions();
-        ArrayList<Question> list = new ArrayList<>(questions);
-        if(list.size()>Integer.parseInt(String.valueOf(quiz.getNumberOfQuestions()))){
-            list.subList(0,Integer.parseInt(String.valueOf(quiz.getNumberOfQuestions()+1)));
+        List<Question> list = new ArrayList<>(questions);
+        if(list.size()> (int) quiz.getNumberOfQuestions()){
+            System.out.println("Inside the check");
+            list=  list.subList(0, (int) quiz.getNumberOfQuestions());
+            for(Question q :list)
+                System.out.println(q.getContent());
         }
         Collections.shuffle(list);
         return  ResponseEntity.ok(list);
@@ -72,4 +72,28 @@ public class QuestionController {
         return ResponseEntity.ok(questionOfQuiz);
     }
 
+    @PostMapping("/eval-quiz")
+    public ResponseEntity<?> evaluateAnswer(@RequestBody List<Question> questions){
+
+       int marksGot=0;
+       int correctAnswer=0;
+        int attempted=0;
+        for(Question q:questions){
+            System.out.println("question ->"+q.getGivenAnswer());
+            Question question = questionService.getQuestion(q.getQuesId());
+
+            if(question.getAnswer().equals(q.getGivenAnswer())){
+              correctAnswer++;
+
+              int singleMark = (int) (question.getQuiz().getMaxMarks() / question.getQuiz().getNumberOfQuestions());
+              marksGot+=singleMark;
+            }
+            if (q.getGivenAnswer()!=null){
+                attempted++;
+            }
+        }
+
+        Map<String,Object> map = Map.of("marksGot",marksGot,"correctAnswer",correctAnswer,"attempted",attempted);
+     return  ResponseEntity.ok(map);
+    }
 }
